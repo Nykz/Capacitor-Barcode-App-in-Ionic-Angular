@@ -1,0 +1,61 @@
+.empty-screen {
+  margin-top: 10rem;
+  ion-icon {
+    font-size: 10rem;
+  }
+}
+
+ion-card {
+  box-shadow: none;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  ion-item {
+    --background: transparent;
+    ion-thumbnail {
+      height: 5rem;
+      width: 5rem;
+      margin: 0 16px 0 0;
+      ion-img {
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+      }
+    }
+
+    ion-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      p.price {
+        margin-top: 10px;
+        ion-text {
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+}
+
+ion-row {
+  align-self: end;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ion-col {
+    padding: 0;
+    margin: 0 3px;
+    font-size: 0.85rem;
+  }
+}
+
+ion-list {
+  margin-bottom: 3rem;
+  ion-item {
+    ion-label,
+    ion-text {
+      font-size: 1.1rem;
+    }
+  }
+}

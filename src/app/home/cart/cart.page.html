@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cart</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button color="dark" (click)="startScan()">
+        <ion-icon name="scan-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if(model) { 
+    
+    @for(item of model?.items; track $index) {
+    <ion-card color="light" class="ion-padding-vertical">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="item?.cover"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>
+          {{ item?.name }}
+          <p class="price">
+            <ion-text color="primary">
+              <strong>{{currency}} {{ item?.price }}</strong>
+            </ion-text>
+          </p>
+        </ion-label>
+
+        <ion-row slot="end">
+          <ion-col>
+            <ion-button
+              fill="clear"
+              color="primary"
+              (click)="subtractQuantity(item)"
+            >
+              <ion-icon slot="icon-only" name="remove"></ion-icon
+            ></ion-button>
+          </ion-col>
+
+          <ion-col class="quantity">
+            <ion-text>
+              <strong> {{item?.quantity}} </strong>
+            </ion-text>
+          </ion-col>
+
+          <ion-col>
+            <ion-button fill="clear" color="primary" (click)="addQuantity(item)">
+              <ion-icon slot="icon-only" name="add"></ion-icon
+            ></ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-card>
+    } 
+
+    <!-- billing details -->
+  <ion-list lines="none" class="ion-margin">
+    <ion-item>
+      <ion-label color="dark"><strong>Total</strong></ion-label>
+      <ion-text slot="end" color="primary">
+        <strong>{{currency}}{{model?.grandTotal | number: '0.2-2'}} </strong>
+      </ion-text>
+    </ion-item>
+  </ion-list>
+
+  } @else {
+  <div align="center" class="empty-screen">
+    <ion-icon name="cart-outline" color="primary"></ion-icon>
+    <p>No items added yet</p>
+  </div>
+  }
+
+  @if(model) {
+    <div class="ion-margin">
+      <ion-button
+        expand="block"
+        color="primary"
+        mode="ios"
+        (click)="isQrPay = true"
+      >
+        Proceed to Checkout
+      </ion-button>
+    </div>
+  }
+
+  <ion-modal 
+    #qrcode_modal 
+    [isOpen]="isQrPay" 
+    (didDismiss)="isQrPay = false">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Pay {{ currency }}{{ model?.grandTotal }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="qrcode_modal.dismiss()" color="dark">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <div class="ion-margin" [align]="'center'">
+          <ion-label> Scan QR Code </ion-label>
+
+          <qrcode
+            [qrdata]="(model.grandTotal).toString()"
+            [width]="256"
+            [errorCorrectionLevel]="'M'"
+          >
+          </qrcode>
+        </div>
+
+        <div class="ion-margin">
+          <ion-button
+            expand="block"
+            color="primary"
+            (click)="pay(qrcode_modal)"
+          >
+            Scan & Pay
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

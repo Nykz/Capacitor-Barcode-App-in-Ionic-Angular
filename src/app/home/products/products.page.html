@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Products</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="ion-margin-top">
+    @for(item of items; track $index) {
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-img [src]="item?.cover"></ion-img>
+      </ion-thumbnail>
+
+      <ion-label>
+        {{item?.name}}
+        <p>{{item?.description}}</p>
+        <p>
+          <ion-text color="primary">{{currency}}{{item?.price}}</ion-text>
+        </p>
+      </ion-label>
+
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="dark"
+        (click)="getBarcodeData(item)"
+      >
+        <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+    }
+  </ion-list>
+
+  <ion-modal
+    #barcode_modal
+    [isOpen]="showBarcode"
+    (didDismiss)="showBarcode = false"
+    [breakpoints]="[0.3, 0.5, 0.9]"
+    [initialBreakpoint]="0.5"
+  >
+    <ng-template>
+
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>{{ itemModel?.name }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="barcode_modal.dismiss()" color="dark">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <div class="ion-margin">
+          <ion-label>
+            Scan Barcode
+          </ion-label>
+          <img id="barcode" class="ion-margin-top">
+        </div>
+      </ion-content>
+
+    </ng-template>
+  </ion-modal>
+</ion-content>
